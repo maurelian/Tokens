@@ -1,5 +1,9 @@
-const HumanStandardToken = artifacts.require(`./HumanStandardToken.sol`)
+const BambooToken = artifacts.require(`./BambooToken.sol`)
 
-module.exports = (deployer) => {
-  deployer.deploy(HumanStandardToken)
+module.exports = (deployer, network) => {
+    if (network == "ropsten") {
+        // don't deploy again
+    } else {
+        deployer.deploy(BambooToken);
+    }
 }
