@@ -14,25 +14,25 @@ contract('BambooToken', function (accounts) {
 // Setup/funding
 
   it("Should be found on ropsten", function() {
-    console.log(web3.eth.accounts);
+    // console.log(web3.eth.accounts);
     return BambooToken.at('0xa54f364dd6189481c608c5d405d15cf0b705abe7').then(function (_bambooToken) {
       bambooToken = _bambooToken;
-      debugger;
-      assert.ok(bambooToken.address.indexOf('0x') > 0);
+      assert.ok(bambooToken.address.indexOf('0x') != -1);
       return bambooToken.totalSupply.call();
     }).then(function (_totalSupply) {
       totalSupply = _totalSupply;
       return bambooToken.balanceOf.call(bambooToken.address);
     }).then(function(_reserve) {
       reserve = _reserve;
-      assert.ok(result.toNumber() > 0);
-      return web3.eth.getBalance(bambooToken.address);
-    }).then(function(_tokenEthBalance){
-      tokenEthBalance = _tokenEthBalance;
       debugger;
-      return buyPrice = function(amount) {
-        tokenEthBalance/(reserve - amount) 
-      }; 
+      assert.ok(reserve.toNumber() > 0);
+      // return bambooToken.getBalance.call(bambooToken.address);
+    // }).then(function(_tokenEthBalance){
+    //   tokenEthBalance = _tokenEthBalance;
+    //   debugger;
+    //   return buyPrice = function(amount) {
+    //     tokenEthBalance/(reserve - amount) 
+    //   }; 
     }).catch((err) => { throw new Error(err) });
   });
 
@@ -47,9 +47,12 @@ contract('BambooToken', function (accounts) {
       throw new Error(err) });
   });
 
-
+  // Price in ETH/BAM
+  // 1.7/(75557863725914323419136-1000)
+  // 2.24993127e-23
   it('buy: should credit me some balance when I call buy', function () {
-    bambooToken.buy(100, {from: accounts[0], value:1000000}).then(function (tx) {
+    return bambooToken.buy(100, {from: accounts[0], value:web3.toWei(1)}).then(function (tx) {
+      debugger;
       return bambooToken.balanceOf.call(accounts[0])
     }).then(function (result) {
       assert.strictEqual(result.toNumber(), 100)

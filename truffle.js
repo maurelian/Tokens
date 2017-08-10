@@ -29,7 +29,7 @@ module.exports = {
       host: 'https://morden.infura.io'
     },
     ropsten: {
-      provider: new HDWalletProvider(mnemonic, 'https://ropsten.infura.io'),
+      provider: new HDWalletProvider(mnemonic, 'https://ropsten.infura.io/ELJgRhUX986I1CBwVyul'),
       network_id: '3'
     },
     testrpc: {
