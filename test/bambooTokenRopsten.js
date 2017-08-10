@@ -2,7 +2,6 @@ var BambooToken = artifacts.require('./BambooToken.sol')
 var SampleRecipientSuccess = artifacts.require('./SampleRecipientSuccess.sol')
 var SampleRecipientThrow = artifacts.require('./SampleRecipientThrow.sol')
 
-// const bambooToken = BambooToken.at('0xa54f364dd6189481c608c5d405d15cf0b705abe7');
 let bambooToken;
 let totalSupply;
 let tokenEthBalance;
@@ -14,7 +13,6 @@ contract('BambooToken', function (accounts) {
 // Setup/funding
 
   it("Should be found on ropsten", function() {
-    // console.log(web3.eth.accounts);
     return BambooToken.at('0xa54f364dd6189481c608c5d405d15cf0b705abe7').then(function (_bambooToken) {
       bambooToken = _bambooToken;
       assert.ok(bambooToken.address.indexOf('0x') != -1);
@@ -26,6 +24,7 @@ contract('BambooToken', function (accounts) {
       reserve = _reserve;
       debugger;
       assert.ok(reserve.toNumber() > 0);
+      debugger;
       // return bambooToken.getBalance.call(bambooToken.address);
     // }).then(function(_tokenEthBalance){
     //   tokenEthBalance = _tokenEthBalance;
@@ -39,7 +38,6 @@ contract('BambooToken', function (accounts) {
   it.skip("Should deploy on testrpc", function() {
     BambooToken.new(10000, 'Simon Bucks', 1, 'SBX', {from: accounts[0], value: web3.toWei(0.1, "ether")}).then(function (_bambooToken) {
       bambooToken = _bambooToken;
-      debugger;
       assert.ok(bambooToken.address.indexOf('0x') > -1);
       return bambooToken.totalSupply.call();
     }).catch((err) => { 
@@ -51,8 +49,8 @@ contract('BambooToken', function (accounts) {
   // 1.7/(75557863725914323419136-1000)
   // 2.24993127e-23
   it('buy: should credit me some balance when I call buy', function () {
-    return bambooToken.buy(100, {from: accounts[0], value:web3.toWei(1)}).then(function (tx) {
-      debugger;
+    console.log("which accounts do we have? ", accounts);
+    return bambooToken.buy(100, {from: accounts[0], value:web3.toWei(0.01, 'ether')}).then(function (tx) {
       return bambooToken.balanceOf.call(accounts[0])
     }).then(function (result) {
       assert.strictEqual(result.toNumber(), 100)
@@ -60,8 +58,9 @@ contract('BambooToken', function (accounts) {
   })
 
   it('sell: should reduce my balance when I call sell', function () {
-    bambooToken.sell(1, {from: accounts[0]}).then(function (tx) {
+    return bambooToken.sell(1, {from: accounts[0]}).then(function (tx) {
       return bambooToken.balanceOf.call(accounts[0])
+      debugger;
     }).then(function (result) {
       assert.strictEqual(result.toNumber(), 99)
     }).catch((err) => { throw new Error(err) })
